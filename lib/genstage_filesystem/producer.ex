@@ -4,8 +4,8 @@ defmodule GenstageFilesystem.Producer do
   ##########
   # Client API
   ##########
-  def start_link(dir) do
-    GenStage.start_link(__MODULE__, {0, dir, []}, name: __MODULE__)
+  def start_link() do
+    GenStage.start_link(__MODULE__, 0, name: __MODULE__)
   end
 
 
@@ -13,28 +13,24 @@ defmodule GenstageFilesystem.Producer do
   # Server callbacks
   ##########
 
-  def init({0, dir, []}) do
-    {:producer, {0, dir, []}}
+  def init(0) do
+    {:producer, 0}
   end
 
-  def handle_demand(demand, {state_demand, dir, files}) when demand > 0 do
+  def handle_demand(demand, state) when demand > 0 do
 
     # Make a call to the server for the required number of events,
     # accounting for previously unsatisfied demand
-    new_demand = demand + state_demand
+    new_demand = demand + state
 
-    {count, events} = take(new_demand, dir)
+    {count, events} = take(new_demand)
 
-    # Events will always be returned from this server,
-    # but if `events` was empty, state will be updated to the new demand level
-    {:noreply, events, {new_demand - count, dir, files}}
+    
+    {:noreply, events, new_demand - count}
   end
 
-  defp take(demand, dir) do
-    
-    {:ok, files} = File.ls(dir)
-
-    {Enum.count(files), files}
+  def take(demand) do
+    GenstageFilesystem.Server.pull(demand)
   end
 
 end

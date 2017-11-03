@@ -5,31 +5,45 @@ defmodule GenstageFilesystem.Application do
 
   use Application
   require Logger
-  require Tap
+
 
   def start(_type, _args) do
-    setup_taps()
+    directory = Application.get_env(:genstage_filesystem, :directory)
+    {:ok, pid } = start_app(directory)    
+  end
+
+
+
+  defp start_app(nil) do
+    Logger.warn("Config value :genstage_filesystem, :directory is nil - Application not started")
+    {:ok, self()}
+  end
+
+  defp start_app(directory) do
+    start_app(directory, directory_valid?(directory))
+  end
+
+  defp start_app(directory, false) do
+    Logger.warn("Config value :genstage_filesystem, :directory is '#{directory}' - invalid directory")
+    {:ok, self()}
+  end
+
+  defp start_app(directory, true) do
 
     import Supervisor.Spec
 
-
-    
-
-    # List all child processes to be supervised
     children = [
-      # Starts a worker by calling: GenstageFilesystem.Worker.start_link(arg)
-      worker(GenstageFilesystem.Producer, ["."])
+      worker(GenstageFilesystem.Server,[directory]),
+      worker(GenstageFilesystem.Producer, [])
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: GenstageFilesystem.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
 
-  defp setup_taps do
-    require GenstageFilesystem.Producer
-    Tap.call(GenstageFilesystem.Producer.init(_), max: 2)
+  defp directory_valid?(directory) do
+    File.exists?(directory) && File.dir?(directory)
   end
+
 end

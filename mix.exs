@@ -7,6 +7,7 @@ defmodule GenstageFilesystem.Mixfile do
       version: "0.1.0",
       elixir: "~> 1.4",
       start_permanent: Mix.env == :prod,
+      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -23,7 +24,13 @@ defmodule GenstageFilesystem.Mixfile do
   defp deps do
     [
       {:gen_stage, "~> 0.12"},
-      {:tap, "~> 0.1"},
+      {:tap, "~> 0.1"}
     ]
+  end
+
+  defp aliases do
+  [
+    test: "test --no-start"
+  ]
   end
 end

@@ -1,3 +1,8 @@
-%{"gen_stage": {:hex, :gen_stage, "0.12.2", "e0e347cbb1ceb5f4e68a526aec4d64b54ad721f0a8b30aa9d28e0ad749419cbb", [], [], "hexpm"},
+%{"cachex": {:hex, :cachex, "2.1.0", "fad49b4e78d11c6c314e75bd8c9408f5b78cb065c047442798caed10803ee3be", [], [{:eternal, "~> 1.1", [hex: :eternal, repo: "hexpm", optional: false]}], "hexpm"},
+  "deppie": {:hex, :deppie, "1.1.0", "cfb6fcee7dfb64eb78cb8505537971a0805131899326ad469ef10df04520f451", [], [], "hexpm"},
+  "erlexec": {:hex, :erlexec, "1.2.2", "122edf6be532475dd44d2c99653439528e3b3799e2ee0125f2560bcca60a6716", [], [], "hexpm"},
+  "eternal": {:hex, :eternal, "1.1.4", "3a40fd9b9708f79216a6ec8ae886f2b17685dc26b119b9c0403c2b0d3dc1ac69", [], [{:deppie, "~> 1.1", [hex: :deppie, repo: "hexpm", optional: false]}], "hexpm"},
+  "gen_stage": {:hex, :gen_stage, "0.12.2", "e0e347cbb1ceb5f4e68a526aec4d64b54ad721f0a8b30aa9d28e0ad749419cbb", [], [], "hexpm"},
   "recon": {:hex, :recon, "2.3.2", "4444c879be323b1b133eec5241cb84bd3821ea194c740d75617e106be4744318", [], [], "hexpm"},
+  "sentix": {:hex, :sentix, "1.0.3", "f8c8b6bc5e1f12a4df8952710bf12a29075937742fc7101b1fea7ba1cee7af79", [], [{:cachex, "~> 2.0", [hex: :cachex, repo: "hexpm", optional: false]}, {:erlexec, "1.2.2", [hex: :erlexec, repo: "hexpm", optional: false]}], "hexpm"},
   "tap": {:hex, :tap, "0.1.5", "09b69b55109997b5b46daf0b70fa0d1af30e96ebdff037a113d981e8576ca601", [], [{:recon, "~> 2.3", [hex: :recon, repo: "hexpm", optional: false]}], "hexpm"}}
