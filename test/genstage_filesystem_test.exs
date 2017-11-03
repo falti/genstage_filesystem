@@ -42,10 +42,15 @@ defmodule GenstageFilesystemTest do
     
       events = GenStage.stream([{producer, max_demand: 1, cancel: :temporary}])
 
-      Process.sleep(2)
+      Process.sleep(2) # FIXME: required, otherwise we somehow miss the 9.jpg
 
-      assert Enum.take(events, 2) == ["3.jpg","4.jpg"]
-      assert Enum.take(events, 1) == ["5.jpg"]
+      files = Enum.take(events, 2) |> Enum.map(fn({file, _mtime}) -> file end)
+
+      assert files == ["3.jpg","4.jpg"]
+
+      files = Enum.take(events, 1) |> Enum.map(fn({file, _mtime}) -> file end)
+
+      assert files == ["5.jpg"]
       {:ok, files} = File.ls(test_dir)
 
       assert [
@@ -75,6 +80,16 @@ defmodule GenstageFilesystemTest do
 
     File.rm_rf(test_dir)
     
+  end
+
+  test "File operations" do
+
+    {:ok, test_dir} = create_random_dir()
+    File.touch("#{test_dir}/1.jpg") 
+
+    {file, %NaiveDateTime{year: _year}} = GenstageFilesystem.FileUtils.file_with_mtime("1.jpg", test_dir)
+    
+    File.rm_rf(test_dir)
   end
 
 

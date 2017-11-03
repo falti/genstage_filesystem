@@ -1,6 +1,8 @@
+[![Build Status](https://semaphoreci.com/api/v1/recoflo/genstage_filesystem/branches/master/badge.svg)](https://semaphoreci.com/recoflo/genstage_filesystem)
+
 # GenstageFilesystem
 
-**TODO: Add description**
+This is a GenStage producer which scans a directory for new files.
 
 ## Installation
 
